@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres
+    container_name: pokemon-db
+    tty: true
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=pokemon-db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=docker
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+
+  app:
+    image: node:16.13.0
+    container_name: pokemon-app
+    tty: true
+    working_dir: /usr/app
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/usr/app
+    command: sh -c "yarn build && yarn start"
